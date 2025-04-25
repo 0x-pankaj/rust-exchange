@@ -1,14 +1,21 @@
-use actix_web::{App, HttpResponse, HttpServer, Responder, get};
+use actix_web::{App, HttpServer, web};
 
-#[get("/hello")]
-async fn hello() -> impl Responder {
-    HttpResponse::Ok().json("Hello world")
-}
+use routes::order::order_router;
+
+mod models;
+mod redis_manager;
+mod routes;
+mod types;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().service(hello))
-        .bind(("127.0.0.1", 8080))?
-        .run()
-        .await
+    println!("Server is running on port 8000");
+    HttpServer::new(|| {
+        App::new()
+            .wrap(actix_web::middleware::Logger::default())
+            .service(web::scope("/api/v1").configure(order_router))
+    })
+    .bind(("127.0.0.1", 8000))?
+    .run()
+    .await
 }
