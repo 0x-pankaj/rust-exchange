@@ -1,4 +1,3 @@
-#[derive()]
 pub struct Order {
     pub market: String,
     pub price: String,

@@ -3,9 +3,9 @@ use serde_json::Value;
 
 pub const CREATE_ORDER: &str = "CREATE_ORDER";
 pub const CANCEL_ORDER: &str = "CANCEL_ORDER";
-pub const ON_RAMP: &str = "ON_RAMP";
+// pub const ON_RAMP: &str = "ON_RAMP";
 pub const GET_OPEN_ORDERS: &str = "GET_OPEN_ORDERS";
-pub const GET_DEPTH: &str = "GET_DEPTH";
+// pub const GET_DEPTH: &str = "GET_DEPTH";
 
 #[derive(Serialize, Deserialize, Debug)]
 pub struct MessageToEngine {
@@ -31,7 +31,14 @@ pub enum MessageFromOrderbook {
         executed_qty: f64,
         remaining_qty: f64,
     },
-    OpenOrders(Vec<OpenOrder>),
+    OpenOrders {
+        order_id: String,
+        executed_qty: f64,
+        price: String,
+        quantity: String,
+        side: OrderSide,
+        user_id: String,
+    },
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -42,11 +49,18 @@ pub struct Fill {
 }
 
 #[derive(Serialize, Deserialize, Debug)]
-pub struct OpenOrder {
-    order_id: String,
-    executed_qty: f64,
-    price: String,
-    quantity: String,
-    side: String,
-    user_id: String,
+#[serde(rename_all = "lowercase")]
+pub enum OrderSide {
+    Buy,
+    Sell,
 }
+
+// #[derive(Serialize, Deserialize, Debug)]
+// pub struct OpenOrder {
+//     order_id: String,
+//     executed_qty: f64,
+//     price: String,
+//     quantity: String,
+//     side: String,
+//     user_id: String,
+// }

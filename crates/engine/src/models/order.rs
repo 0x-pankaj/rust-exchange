@@ -12,9 +12,18 @@ pub struct Order {
 }
 
 #[derive(Serialize, Deserialize, Debug, Clone, PartialEq)]
-enum OrderSide {
+pub enum OrderSide {
     #[serde(rename = "buy")]
     Buy,
     #[serde(rename = "sell")]
     Sell,
+}
+
+#[derive(Serialize, Deserialize, Clone, Debug)]
+pub struct Fill {
+    pub price: String,
+    pub qty: Decimal,
+    pub trade_id: u64,
+    pub other_user_id: String,
+    pub marker_order_id: String,
 }

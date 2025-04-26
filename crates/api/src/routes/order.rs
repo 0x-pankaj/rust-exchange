@@ -3,7 +3,7 @@ use serde::Deserialize;
 
 use crate::{
     redis_manager::redis_manager::RedisManager,
-    types::messages::{CANCEL_ORDER, CREATE_ORDER, GET_OPEN_ORDERS, MessageToEngine},
+    types::messages::{CANCEL_ORDER, CREATE_ORDER, GET_OPEN_ORDERS, MessageToEngine, OrderSide},
 };
 
 #[derive(Deserialize)]
@@ -11,7 +11,7 @@ pub struct CreateOrderRequest {
     market: String,
     price: String,
     quantity: String,
-    side: String,
+    side: OrderSide,
     user_id: String,
 }
 
