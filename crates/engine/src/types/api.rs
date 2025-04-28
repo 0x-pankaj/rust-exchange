@@ -1,3 +1,5 @@
+use crate::models::order::Order;
+use rust_decimal::Decimal;
 use serde::{Deserialize, Serialize};
 
 pub const CREATE_ORDER: &str = "CREATE_ORDER";
@@ -84,13 +86,13 @@ pub enum MessageToApi {
     OrderCancelled { payload: OrderCancelledPayload },
 
     #[serde(rename = "OPEN_ORDERS")]
-    OpenOrders { payload: OpenOrdersPayload },
+    OpenOrders { payload: Vec<Order> },
 }
 
 #[derive(Deserialize, Debug, Serialize)]
 pub struct DepthPayload {
-    pub bids: Vec<String, String>,
-    pub asks: Vec<String, String>,
+    pub bids: Vec<(String, String)>,
+    pub asks: Vec<(String, String)>,
 }
 
 #[derive(Deserialize, Debug, Serialize)]
@@ -113,6 +115,3 @@ pub struct OrderCancelledPayload {
     pub executed_qty: Decimal,
     pub remaining_qty: Decimal,
 }
-
-// #[derive(Deserialize, Debug, Serialize)]
-// pub struct OpenOrdersPayload {}

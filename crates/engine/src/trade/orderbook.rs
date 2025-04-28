@@ -1,4 +1,4 @@
-use std::collections::HashMap;
+use std::{collections::HashMap, fmt::Debug};
 
 use crate::models::order::{Fill, Order, OrderSide};
 use rust_decimal::Decimal;
@@ -57,10 +57,8 @@ impl Orderbook {
                 if order.filled < order.quantity {
                     self.bids.push(order);
                 }
-
                 result
             }
-
             OrderSide::Sell => {
                 let result = self.match_ask(&order);
                 order.filled = result.executed_qty;
@@ -68,6 +66,7 @@ impl Orderbook {
                 if order.filled < order.quantity {
                     self.asks.push(order);
                 }
+
                 result
             }
         }

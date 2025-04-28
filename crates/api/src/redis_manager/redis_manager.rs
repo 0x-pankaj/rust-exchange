@@ -11,9 +11,6 @@ pub struct RedisManager {
     publisher: Client,
 }
 
-// Defining  the static instance with once_cell
-// static INSTANCE: Lazy<Mutex<RedisManager>> = Lazy::new(|| Mutex::new(RedisManager::new()));
-
 impl RedisManager {
     fn new() -> Self {
         let client = Client::open("redis://127.0.0.1/").expect("Failed to create Redis client");

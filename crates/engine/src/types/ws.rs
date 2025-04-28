@@ -5,7 +5,7 @@ use serde::{Deserialize, Serialize};
 pub enum WsMessage {
     TickerUpdate(TicketUpdateMessage),
     DepthUpdate(DepthUpdateMessage),
-    TradeAdded(TradeUpdateMessage),
+    TradeAdded(TradeAddedMessage),
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -34,22 +34,22 @@ pub struct TickerUpdateData {
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DepthUpdateMessage {
-    stream: String,
-    data: DepthUpdateData,
+    pub stream: String,
+    pub data: DepthUpdateData,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct DepthUpdateData {
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub b: Option<Vec<String, String>>,
+    pub b: Option<Vec<(String, String)>>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub a: Option<Vec<String, String>>,
+    pub a: Option<Vec<(String, String)>>,
     pub e: String,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct TradeUpdateMessage {
-    stream: string,
+    stream: String,
     data: TradeUpdateData,
 }
 
@@ -61,4 +61,20 @@ pub struct TradeUpdateData {
     pub p: String,
     pub q: String,
     pub s: String, //symbol
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct TradeAddedMessage {
+    pub stream: String,
+    pub data: WsTradeAddedData,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct WsTradeAddedData {
+    pub e: String,
+    pub t: u64,
+    pub m: bool,
+    pub p: String,
+    pub q: String,
+    pub s: String,
 }

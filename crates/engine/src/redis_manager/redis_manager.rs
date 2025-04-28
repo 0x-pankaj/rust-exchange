@@ -3,7 +3,7 @@ use std::sync::Arc;
 use redis::{AsyncCommands, Client};
 // use tokio::sync::Mutex;
 
-use crate::types::{api::MessageToApi, ws::WsMessage};
+use crate::types::{api::MessageToApi, db::DbMessage, ws::WsMessage};
 
 pub struct RedisManager {
     client: Client,
@@ -24,7 +24,12 @@ impl RedisManager {
     }
 
     //publishing message to database queue
-    // pub async fn push_message(&self, message: )
+    pub async fn push_message(&self, message: DbMessage) -> redis::RedisResult<()> {
+        let mut conn = self.client.get_async_connection().await?;
+        let serialized = serde_json::to_string(&message).expect("Failed to serialized DB message");
+
+        conn.lpush("db_processor", serialized).await
+    }
 
     //publishing message for websocket queue
     pub async fn publish_message(
